@@ -13,7 +13,7 @@ public final class AuthAssignment<Database>: Model where Database: SchemaSupport
     /// Primary Key for this model
     public var id: UUID?
     
-    /// user ID, this perhaps needs to be more generic type
+    /// user ID, this perhaps needs to be more generic type that can be uder defined.
     public var userId: UUID
     
     /// AuthItem assigned to User
