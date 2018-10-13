@@ -8,7 +8,7 @@ public final class RBACMiddleware: Middleware {
             return Response(http: HTTPResponse(status: .ok), using: request)
         }*/
         // essentiall this will guard that user can perform the action on the route
-        guard 1 > 2 else {
+        guard 1 < 2 else {
             throw Abort(.unauthorized, reason: "You are not authorized to perform this action")
         }
         return try next.respond(to: request)
