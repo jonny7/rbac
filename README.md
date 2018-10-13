@@ -15,11 +15,16 @@ dependencies: [
 ]
 ```
 
-# Usage
+# Configuration
 
 First, add the module to your `Sources/App/configure.swift`
 ```swift
     import rbac
+```
+
+Register the RBAC Middleware as a service
+```swift
+    services.register(RBACMiddleware.self)
 ```
 
 Then add the needed DB models as a migration inside `Sources/App/configure.swift`
@@ -28,4 +33,15 @@ Then add the needed DB models as a migration inside `Sources/App/configure.swift
     migrations.add(model: AuthItem.self, database: .sqlite)
     migrations.add(model: AuthItemChild.self, database: .sqlite)
     migrations.add(model: AuthRule.self, database: .sqlite)
+```
+
+# Usage
+
+You can simply apply the middleare to routes with something like:
+```swift
+    router.group(RBACMiddleware.self){ rbacRoute in
+        rbacRoute.get("demo"){ req in
+            return "you passed"
+        }
+    }
 ```
