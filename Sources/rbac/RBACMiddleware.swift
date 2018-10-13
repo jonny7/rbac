@@ -1,8 +1,10 @@
 import Vapor
 
-public final class RBACMiddleware: Middleware {
+public final class RBACMiddleware: Middleware, ServiceType {
     
-    public init() {}
+    public static func makeService(for worker: Container) throws -> Self {
+        return try .default(environment: worker.environment, log: worker.make())
+    }
     
     public func respond(to request: Request, chainingTo next: Responder) throws -> EventLoopFuture<Response> {
         // use User ID from the cache, and query DB to clarify if they have access to the route
