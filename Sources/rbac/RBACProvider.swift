@@ -19,6 +19,4 @@ public final class RBACProvider: Provider {
     public func didBoot(_ container: Container) throws -> EventLoopFuture<Void> {
         return .done(on: container)
     }
-    
-
 }
