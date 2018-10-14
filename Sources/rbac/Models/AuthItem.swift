@@ -13,7 +13,7 @@ public final class AuthItem<Database>: Model where Database: SchemaSupporting {
     /// id for AuthItem
     public var id: UUID?
     
-    /// name for AuthItem -> "Standard User" etc
+    /// name for AuthItem -> "Standard User" if a role, or "Can View Management" if a permission
     public var name: String
     
     /// type for AuthItem, @todo make this a type, 1 is a role, 2 is a permission
@@ -25,9 +25,6 @@ public final class AuthItem<Database>: Model where Database: SchemaSupporting {
     /// what rule do you want to attach to this AuthItem
     /// examples, might be that User.userId == Posts.userId, so only the person who created the post can edit it
     public var rule: UUID?
-    
-    /// the additional data associated with this item
-    public var data: String? // @todo this may be unused
     
     public init(name: String, type: Int){
         self.name = name
@@ -45,7 +42,6 @@ Database: SchemaSupporting & MigrationSupporting {
             builder.field(for: \AuthItem<Database>.type)
             builder.field(for: \AuthItem<Database>.description)
             builder.field(for: \AuthItem<Database>.rule)
-            builder.field(for: \AuthItem<Database>.data)
         }
     }
     

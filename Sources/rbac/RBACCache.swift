@@ -1,12 +1,12 @@
 import Vapor
 
 /// Stores user ID
-final class RBACCache: Service {
+public final class RBACCache: Service {
     /// The internal storage.
     private var storage: [ObjectIdentifier: Any]
     
-    /// Create a new authentication cache.
-    init() {
+    /// Create a new rbac cache.
+    public init() {
         self.storage = [:]
     }
     
