@@ -22,9 +22,14 @@ First, add the module to your `Sources/App/configure.swift`
     import rbac
 ```
 
-Register the RBAC Middleware as a service
+Register the RBAC Middleware as a service also in `Sources/App/configure.swift`
 ```swift
+    // register rbac
     services.register(RBACMiddleware.self)
+    services.register(RBACCache.self) { container in
+        return RBACCache()
+    }
+
 ```
 
 Then add the needed DB models as a migration inside `Sources/App/configure.swift`
@@ -51,8 +56,10 @@ You can simply apply the middleare to routes with something like:
 This package uses a hierarchical system that essentially works like this:
 
 **Routes** - These are the paths for your API. examples would be
-    `api/user/find`
-    `api/user/* -> All actions within a parent route group`
+
+`api/user/find`
+
+`api/user/* -> All actions within a parent route group`
 
 Routes can also specify a request type eg - get, put, post etc
 
