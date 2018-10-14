@@ -45,3 +45,21 @@ You can simply apply the middleare to routes with something like:
         }
     }
 ```
+
+# Roles, permissions and routes
+
+This package uses a hierarchical system that essentially works like this:
+
+**Routes** - These are the paths for your API. examples would be
+    `api/user/find`
+    `api/user/* -> All actions within a parent route group`
+
+Routes can also specify a request type eg - get, put, post etc
+
+Routes can then be grouped to form a permission. 
+__Routes shouldn't be left in the wild, all routes should be assigned to a permission(s)__
+
+**Permissions**
+
+Permissions are groups of related routes.
+
