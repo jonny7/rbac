@@ -41,15 +41,3 @@ Database: SchemaSupporting & MigrationSupporting {
         return Database.delete(AuthAssignment<Database, T>.self, on: connection)
     }
 }
-
-public protocol AuthUser: Codable {
-    /// Type of the User's ID
-    associatedtype UserIDType
-    
-    /// Key path to the user ID
-    typealias UserIDKey = WritableKeyPath<Self, UserIDType>
-}
-
-extension AuthAssignment: AuthUser {
-    public typealias UserIDType = T
-}
