@@ -2,7 +2,7 @@ import Vapor
 import Fluent
 import Foundation
 
-public final class AuthAssignment<Database>: Model where Database: SchemaSupporting {
+public final class AuthAssignment<Database, T>: Model where Database: SchemaSupporting & JoinSupporting, T: Codable {
     
     /// See Model.ID
     public typealias ID = UUID
@@ -13,13 +13,13 @@ public final class AuthAssignment<Database>: Model where Database: SchemaSupport
     /// Primary Key for this model
     public var id: UUID?
     
-    /// user ID, this perhaps needs to be more generic type that can be uder defined.
-    public var userId: UUID
+    /// generic user ID
+    public var userId: T
     
     /// AuthItem assigned to User
     public var authItemId: AuthItem<Database>.ID
     
-    public init(userId: UUID, authItemId: UUID){
+    public init(userId: T, authItemId: UUID){
         self.userId = userId
         self.authItemId = authItemId
     }
@@ -28,16 +28,28 @@ public final class AuthAssignment<Database>: Model where Database: SchemaSupport
 extension AuthAssignment: AnyMigration, Migration where
 Database: SchemaSupporting & MigrationSupporting {
     
-    public static func prepare(on connection: Database.Connection) -> EventLoopFuture<Void> {
-        return Database.create(AuthAssignment<Database>.self, on: connection) { builder in
-            builder.field(for: \AuthAssignment<Database>.id)
-            builder.field(for: \AuthAssignment<Database>.userId)
-            builder.field(for: \AuthAssignment<Database>.authItemId)
-            builder.reference(from: \AuthAssignment<Database>.authItemId, to: \AuthItem<Database>.id, onUpdate: nil, onDelete: nil)
+    public static func prepare(on connection: Database.Connection) -> Future<Void> {
+        return Database.create(AuthAssignment<Database, T>.self, on: connection) { builder in
+            builder.field(for: \AuthAssignment<Database, T>.id)
+            builder.field(for: \AuthAssignment<Database, T>.userId)
+            builder.field(for: \AuthAssignment<Database, T>.authItemId)
+            builder.reference(from: \AuthAssignment<Database, T>.authItemId, to: \AuthItem<Database>.id, onUpdate: nil, onDelete: nil)
         }
     }
     
-    public static func revert(on connection: Database.Connection) -> EventLoopFuture<Void> {
-        return Database.delete(AuthAssignment<Database>.self, on: connection)
+    public static func revert(on connection: Database.Connection) -> Future<Void> {
+        return Database.delete(AuthAssignment<Database, T>.self, on: connection)
     }
+}
+
+public protocol AuthUser: Codable {
+    /// Type of the User's ID
+    associatedtype UserIDType
+    
+    /// Key path to the user ID
+    typealias UserIDKey = WritableKeyPath<Self, UserIDType>
+}
+
+extension AuthAssignment: AuthUser {
+    public typealias UserIDType = T
 }

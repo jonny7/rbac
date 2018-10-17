@@ -2,7 +2,7 @@ import Vapor
 import Fluent
 import Foundation
 
-public final class AuthItem<Database>: Model where Database: SchemaSupporting {
+public final class AuthItem<Database>: Model where Database: SchemaSupporting & JoinSupporting {
     
     /// See Model.ID
     public typealias ID = UUID
@@ -35,7 +35,7 @@ public final class AuthItem<Database>: Model where Database: SchemaSupporting {
 extension AuthItem: AnyMigration, Migration where
 Database: SchemaSupporting & MigrationSupporting {
     
-    public static func prepare(on connection: Database.Connection) -> EventLoopFuture<Void> {
+    public static func prepare(on connection: Database.Connection) -> Future<Void> {
         return Database.create(AuthItem<Database>.self, on: connection) { builder in
             builder.field(for: \AuthItem<Database>.id)
             builder.field(for: \AuthItem<Database>.name)
@@ -45,7 +45,7 @@ Database: SchemaSupporting & MigrationSupporting {
         }
     }
     
-    public static func revert(on connection: Database.Connection) -> EventLoopFuture<Void> {
+    public static func revert(on connection: Database.Connection) -> Future<Void> {
         return Database.delete(AuthItem<Database>.self, on: connection)
     }
 }
