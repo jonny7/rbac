@@ -2,7 +2,7 @@ import Vapor
 import Fluent
 import Foundation
 
-public final class AuthItemChild<Database>: Model where Database: SchemaSupporting {
+public final class AuthItemChild<Database>: Model where Database: SchemaSupporting & JoinSupporting {
     
     /// See Model.ID
     public typealias ID = UUID
