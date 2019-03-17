@@ -5,14 +5,17 @@ public final class RBACMiddleware<Database, R>: Middleware where Database: Schem
     
     public func respond(to request: Request, chainingTo next: Responder) throws -> Future<Response> {
 
-        // essentiall this will guard that user can perform the action on the route
+        /// essentiall this will guard that user can perform the action on the route
         let path = request.http.url.path
-        let permissions = AuthItemChild<Database>
-                            .query(on: request)
-                            .join(\AuthItem<Database>.id, to: \AuthItemChild<Database>.parent)
-                            .join(\AuthAssignment<Database, R>.authItemId, to: \AuthItem<Database>.id)
-                            .filter(\AuthItem<Database>.name == path)
-                            .all()
+        /// path is used for a firect route "api/v1/users"
+        /// can also use a permission or role name to access
+        let permissions = AuthItem<Database>
+            .query(on: request)
+            .join(\AuthAssignment<Database, R>.authItemId, to: \AuthItem<Database>.id)
+            .filter(\AuthItem<Database>.name == path)
+            // and assignment == cached User
+            // and the rule works if applied to route eg update user.id == post.userId
+            .all()
         
         // @todo add in cache, for less DB reqs
         return try next.respond(to: request)
