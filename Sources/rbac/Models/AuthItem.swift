@@ -13,11 +13,16 @@ public final class AuthItem<Database>: Model where Database: SchemaSupporting & 
     /// id for AuthItem
     public var id: UUID?
     
-    /// name for AuthItem -> "Standard User" if a role, or "Can View Management" if a permission
+    /// name for AuthItem eg "Standard User" could be a role, "Can View Management Metrics" if a permission
+    /// or even just a route "api/v1/user"
     public var name: String
     
-    /// type for AuthItem, @todo make this a type, 1 is a role, 2 is a permission
+    /// type for AuthItem, @todo make this a type, 1 is a role, 2 is a permission or route
     public var type: Int
+    
+    /// for an API, it may be neccessary to specify what type of request on the routes. ie, a user can "get" api/messages/1
+    /// but they can't perform "put" api/messages/1.
+    public var requestType: RequestType?
     
     /// optional description to help identify what each permission/role does, useful for large numbers of permission groups
     public var description: String?
@@ -40,6 +45,7 @@ Database: SchemaSupporting & MigrationSupporting {
             builder.field(for: \AuthItem<Database>.id)
             builder.field(for: \AuthItem<Database>.name)
             builder.field(for: \AuthItem<Database>.type)
+            builder.field(for: \AuthItem<Database>.requestType)
             builder.field(for: \AuthItem<Database>.description)
             builder.field(for: \AuthItem<Database>.rule)
         }

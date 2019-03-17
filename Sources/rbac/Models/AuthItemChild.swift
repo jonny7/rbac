@@ -19,10 +19,6 @@ public final class AuthItemChild<Database>: Model where Database: SchemaSupporti
     /// AuthItem child eg "contributor" role is parent of route "post/edit"
     public var child: AuthItem<Database>.ID
     
-    /// for an API, it may be neccessary to specify what type of request on the routes. ie, a user can "get" api/messages/1
-    /// but they can't perform "put" api/messages/1
-    public var requestType: Array<String>?
-    
     /// Creates a new child item
     public init(parent: UUID, child: UUID){
         self.parent = parent

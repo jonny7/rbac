@@ -13,7 +13,7 @@ public final class AuthAssignment<Database, T>: Model where Database: SchemaSupp
     /// Primary Key for this model
     public var id: UUID?
     
-    /// generic user ID
+    /// generic user ID, provides flexibilty for differing user ID types
     public var userId: T
     
     /// AuthItem assigned to User
@@ -25,6 +25,7 @@ public final class AuthAssignment<Database, T>: Model where Database: SchemaSupp
     }
 }
 
+// build SQL constraints
 extension AuthAssignment: AnyMigration, Migration where
 Database: SchemaSupporting & MigrationSupporting {
     
@@ -40,15 +41,4 @@ Database: SchemaSupporting & MigrationSupporting {
     public static func revert(on connection: Database.Connection) -> Future<Void> {
         return Database.delete(AuthAssignment<Database, T>.self, on: connection)
     }
-}
-
-public protocol AuthUser: Codable {
-    /// Type of the User's ID
-    associatedtype UserIDType
-    
-    /// Key path to the user ID
-    typealias UserIDKey = WritableKeyPath<Self, UserIDType>
-}
-extension AuthAssignment: AuthUser {
-    public typealias UserIDType = T
 }
