@@ -2,8 +2,7 @@ import Vapor
 import Fluent
 import Foundation
 
-public final class AuthAssignment<Database, T>: Model where Database: SchemaSupporting & JoinSupporting, T: Codable {
-    
+public final class AuthAssignment<Database, T>: Model where Database: SchemaSupporting & JoinSupporting, T: ID {
     /// See Model.ID
     public typealias ID = UUID
     
@@ -13,7 +12,7 @@ public final class AuthAssignment<Database, T>: Model where Database: SchemaSupp
     /// Primary Key for this model
     public var id: UUID?
     
-    /// generic user ID, provides flexibilty for differing user ID types
+    /// generic parameter to support different userID types
     public var userId: T
     
     /// AuthItem assigned to User
