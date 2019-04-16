@@ -44,7 +44,7 @@ Replace UUID in the `AuthAssignment` model with the type the primary key of your
 
 # Usage
 
-You can simply apply the middleare to routes with something like:
+You can simply apply the middleware to routes with something like:
 ```swift
     router.group(RBACMiddleware.self){ rbacRoute in
         rbacRoute.get("demo"){ req in
