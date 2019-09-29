@@ -8,6 +8,13 @@ final class rbacTests: XCTestCase {
         // results.
         //XCTAssertEqual(rbac().text, "Hello, World!")
     }
+    
+/*
+     Tests that need to be written if possible as some will be confirming the tables exist
+     - Confirm correct generation of tables for various DBs + that generic param
+     - Add in cascades if certain things are deleted
+     - confim check access, check http method works and wild card routes
+ */
 
 
     static var allTests = [

@@ -5,7 +5,7 @@ public final class RBACProvider: Provider {
     /// See Provider.repositoryName
     public static var repositoryName: String = "rbac"
     
-    /// Create a new authentication provider
+    /// Create a new rbac provider
     public init() { }
     
     /// See Provider.register

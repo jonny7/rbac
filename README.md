@@ -33,7 +33,7 @@ Register the RBAC Middleware as a service also in `Sources/App/configure.swift`
 ```
 
 Then add the needed DB models as a migration inside `Sources/App/configure.swift`
-Here you should replace `MySQLDatabase` with the relational database you are using
+Here you should replace `MySQLDatabase` with the relational database you are using.
 Replace UUID in the `AuthAssignment` model with the type the primary key of your user model is using
 ```swift
     migrations.add(model: AuthAssignment<MySQLDatabase,  UUID>.self, database: .sqlite)
