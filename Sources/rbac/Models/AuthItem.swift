@@ -13,15 +13,16 @@ public final class AuthItem<Database>: Model where Database: SchemaSupporting & 
     /// id for AuthItem
     public var id: UUID?
     
-    /// name for AuthItem eg "Standard User" could be a role, "Can View Management Metrics" if a permission
+    /// name for `AuthItem` eg "contributor" could be a role, "Can View Management Metrics" if a permission
     /// or even just a route "api/v1/user"
     public var name: String
     
-    /// type for AuthItem, @todo make this a type, 1 is a role, 2 is a permission or route
-    public var type: Int
+    /// See `AuthItemType`, identifies whether this item is a role or permission/route
+    public var type: AuthItemType
     
     /// for an API, it may be neccessary to specify what type of request on the routes. ie, a user can "get" api/messages/1
     /// but they can't perform "put" api/messages/1.
+    /// null value will mean all types are allowed
     public var requestType: RequestType?
     
     /// optional description to help identify what each permission/role does, useful for large numbers of permission groups
@@ -31,7 +32,7 @@ public final class AuthItem<Database>: Model where Database: SchemaSupporting & 
     /// examples, might be that User.userId == Posts.userId, so only the person who created the post can edit it
     public var rule: UUID?
     
-    public init(name: String, type: Int){
+    public init(name: String, type: AuthItemType){
         self.name = name
         self.type = type
     }

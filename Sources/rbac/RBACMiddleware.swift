@@ -1,6 +1,5 @@
 import Vapor
 import Fluent
-import Authentication
 import Foundation
 
 public final class RBACMiddleware<Database, R>: Middleware where Database: SchemaSupporting & JoinSupporting, R: ID {
